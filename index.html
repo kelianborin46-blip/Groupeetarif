@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>VARIO — Groupe E</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0F141C;--ink2:#161D28;--ink3:#1F2836;--line:#293445;
+  --go:#45D6A6;--hi:#F2A65A;--mid:#5E708A;--text:#ECE8E0;--muted:#8893A4;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--ink);color:var(--text);
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:460px;margin:0 auto;padding:18px 16px calc(36px + env(safe-area-inset-bottom))}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.brand{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk';font-weight:600;font-size:17px;letter-spacing:-.01em}
+.spark{width:11px;height:11px;border-radius:3px;background:var(--go);box-shadow:0 0 14px var(--go);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){.spark{animation:none}}
+.refresh{display:flex;align-items:center;gap:7px;background:var(--ink2);border:1px solid var(--line);
+  color:var(--text);font:inherit;font-weight:500;font-size:13px;padding:8px 13px;border-radius:999px;cursor:pointer}
+.refresh:hover{border-color:var(--go);color:var(--go)}
+.refresh svg{width:14px;height:14px}
+.refresh.busy svg{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.tabs{display:flex;gap:8px;margin-bottom:6px}
+.tab{flex:1;background:var(--ink2);border:1px solid var(--line);color:var(--muted);
+  font:inherit;font-weight:500;padding:10px;border-radius:11px;cursor:pointer}
+.tab.act{color:var(--text);border-color:var(--go);background:rgba(69,214,166,.08)}
+.tab:disabled{opacity:.45;cursor:default}
+.updated{text-align:center;font-size:11px;color:var(--muted);font-family:'JetBrains Mono';margin:8px 0 14px}
+
+.nowcard{display:flex;justify-content:space-between;align-items:center;border-radius:14px;
+  padding:14px 16px;margin-bottom:14px;border:1px solid var(--line);background:var(--ink2)}
+.nowcard.go{border-color:rgba(69,214,166,.35);background:rgba(69,214,166,.09)}
+.nowcard.hi{border-color:rgba(242,166,90,.32);background:rgba(242,166,90,.09)}
+.nowLabel{font-size:12px;color:var(--muted)}
+.nowPrice{font-family:'Space Grotesk';font-weight:700;font-size:30px;letter-spacing:-.02em;display:block;margin-top:2px}
+.nowPrice small{font-size:13px;font-weight:500;color:var(--muted)}
+.nowVerdict{font-family:'Space Grotesk';font-weight:600;font-size:14px;padding:6px 13px;border-radius:999px;background:var(--ink3)}
+.nowcard.go .nowVerdict{color:var(--go)}.nowcard.hi .nowVerdict{color:var(--hi)}
+
+.card{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:12px 12px 6px}
+.chart{width:100%;height:230px;display:block}
+.grid{stroke:var(--line);stroke-width:1;opacity:.5}
+.yl,.xl{fill:var(--muted);font-size:11px;font-family:'JetBrains Mono'}
+.band.go{fill:var(--go);opacity:.16}.band.hi{fill:var(--hi);opacity:.16}
+.area{fill:rgba(236,232,224,.05)}
+.line{fill:none;stroke:var(--text);stroke-width:2.2;stroke-linejoin:round}
+.dot{stroke:var(--ink);stroke-width:2}.dot.go{fill:var(--go)}.dot.hi{fill:var(--hi)}
+.nowline{stroke:var(--text);stroke-width:1.5;stroke-dasharray:3 3;opacity:.65}
+.axisNote{text-align:right;font-size:10.5px;color:var(--muted);padding:2px 4px 4px}
+.empty{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:22px;
+  text-align:center;color:var(--muted);font-size:13px;line-height:1.5}
+
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0}
+.kpi{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:11px;
+  display:flex;flex-direction:column;align-items:center;gap:2px}
+.kl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.kv{font-family:'Space Grotesk';font-weight:700;font-size:21px}
+.kv.go{color:var(--go)}.kv.hi{color:var(--hi)}
+.ks{font-size:11px;color:var(--muted);font-family:'JetBrains Mono'}
+
+.slots{display:flex;flex-direction:column;gap:9px}
+.slot{display:flex;align-items:center;gap:12px;background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+.slot .sIco{width:7px;align-self:stretch;border-radius:4px}
+.slot.go .sIco{background:var(--go)}.slot.hi .sIco{background:var(--hi)}
+.slot .col{display:flex;flex-direction:column;gap:2px}
+.slot b{font-family:'Space Grotesk';font-weight:600;font-size:14px}
+.slot span{font-size:13px;color:var(--muted);font-family:'JetBrains Mono'}
+
+.h2{font-family:'Space Grotesk';font-weight:600;font-size:13px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.12em;margin:22px 2px 11px}
+.weekCard{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:14px}
+.weekNote{font-size:13px;line-height:1.55;margin:0 0 12px}.weekNote b{color:var(--go)}
+.strip{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;height:34px}
+.cell{border-radius:3px;background:var(--ink3)}
+.cell.go{background:var(--go);opacity:.85}.cell.go2{background:var(--go);opacity:.4}
+.cell.hi{background:var(--hi);opacity:.85}.cell.mid{background:var(--mid);opacity:.3}
+.stripAxis{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);font-family:'JetBrains Mono';margin-top:5px}
+.weekHint{font-size:11.5px;color:var(--muted);line-height:1.5;margin:11px 0 0}
+.tg{display:inline-block;background:var(--go);color:#0F141C;font-family:'Space Grotesk';font-weight:600;font-size:14px;text-decoration:none;padding:11px 16px;border-radius:11px;margin:2px 0 4px}
+.tg:active{opacity:.85}
+.foot{margin-top:20px;border-top:1px solid var(--line);padding-top:14px}
+.foot p{font-size:11px;color:var(--muted);line-height:1.6}
+.foot code{font-family:'JetBrains Mono';font-size:10.5px;color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><span class="spark"></span> Tarif VARIO</div>
+    <button class="refresh" id="refresh">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+      Actualiser
+    </button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab act" id="tab-today">Aujourd'hui</button>
+    <button class="tab" id="tab-tomorrow" disabled>Demain</button>
+  </div>
+  <div class="updated" id="updated">—</div>
+
+  <div id="now"></div>
+  <div id="content"></div>
+
+  <h2 class="h2">Anticipation semaine</h2>
+  <div class="weekCard">
+    <p class="weekNote">Les prix fermes ne sortent que <b>la veille à 18h</b> — aucun prix officiel à 7 jours. Voici le <b>profil-type</b> attendu par beau temps (indicatif) :</p>
+    <div class="strip" id="strip"></div>
+    <div class="stripAxis"><span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>23h</span></div>
+    <p class="weekHint">Très dépendant de la météo : par temps couvert, le creux de midi remonte. Le profil ferme tombe chaque soir via l'API.</p>
+  </div>
+
+  <h2 class="h2">Alertes Telegram</h2>
+  <div class="weekCard">
+    <p class="weekNote">Recevez chaque soir vers 18h le meilleur créneau du lendemain. Chaque personne ouvre le bot et appuie une fois sur <b>Démarrer</b>.</p>
+    <a class="tg" id="tgLink" target="_blank" rel="noopener">Ouvrir le bot Telegram</a>
+    <p class="weekHint">Votre père, votre mère et votre femme font pareil depuis leur propre téléphone. Pas besoin de numéro : Telegram interdit aux bots d'écrire à un numéro non inscrit — c'est le « Démarrer » qui les inscrit.</p>
+  </div>
+
+  <div class="foot"><p>Source : API VARIO Groupe E via votre proxy <code>/api/tarifs</code>, prix <i>integrated</i> (tout compris).</p></div>
+</div>
+
+<script>
+// Données de repli (22.06.2026) si le proxy est injoignable (ex. ouvert en local).
+const SEED=[0.2323,0.2307,0.2253,0.2212,0.2333,0.2288,0.2224,0.2157,0.2107,0.2069,0.2033,0.2019,0.2009,0.2005,0.2003,0.2013,0.202,0.2022,0.2027,0.2039,0.2087,0.2126,0.2155,0.2188,0.2247,0.2265,0.2287,0.2296,0.2737,0.2708,0.2673,0.2632,0.259,0.2511,0.2414,0.232,0.2232,0.2151,0.2063,0.196,0.1834,0.1688,0.1625,0.1576,0.1539,0.1478,0.1528,0.1493,0.0872,0.0843,0.0791,0.0721,0.0731,0.0759,0.069,0.0684,0.0712,0.079,0.0908,0.0917,0.0929,0.0947,0.0984,0.1036,0.1146,0.1183,0.125,0.1339,0.1897,0.1904,0.2033,0.2138,0.2272,0.2382,0.2493,0.2615,0.2713,0.2788,0.2824,0.2898,0.2922,0.2954,0.2975,0.2982,0.2982,0.2979,0.2961,0.2956,0.2934,0.29,0.2892,0.2808,0.242,0.2458,0.2446,0.2427];
+
+// Nom d'utilisateur du bot Telegram (sans @).
+const BOT_USERNAME="groupeetarif_bot";
+
+let day="today";
+const cache={};            // day -> {available, date, values, publication}
+const state={busy:false};
+
+const $=id=>document.getElementById(id);
+const slotLabel=i=>{const m=i*15;return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0")};
+const ct=v=>(v*100).toFixed(1);
+const q=(s,p)=>{const pos=(s.length-1)*p,b=Math.floor(pos),r=pos-b;return s[b+1]!==undefined?s[b]+r*(s[b+1]-s[b]):s[b]};
+
+function windowAvg(arr,slots,mode){
+  let best={start:0,avg:mode==="max"?-1e9:1e9};
+  let sum=0;for(let i=0;i<slots;i++)sum+=arr[i];
+  best={start:0,avg:sum/slots};
+  for(let i=slots;i<arr.length;i++){sum+=arr[i]-arr[i-slots];const a=sum/slots;
+    if(mode==="max"?a>best.avg:a<best.avg)best={start:i-slots+1,avg:a};}
+  return best;
+}
+
+async function load(d,force){
+  if(cache[d]&&!force)return cache[d];
+  try{
+    const r=await fetch(`/api/tarifs?day=${d}`,{cache:force?"reload":"default"});
+    const j=await r.json();
+    cache[d]=j;return j;
+  }catch(e){
+    // Repli local : seulement "aujourd'hui" avec les données figées.
+    if(d==="today"){cache[d]={available:true,date:"2026-06-22",values:SEED,publication:null,seed:true};return cache[d];}
+    cache[d]={available:false};return cache[d];
+  }
+}
+
+async function refresh(force){
+  if(state.busy)return;state.busy=true;
+  $("refresh").classList.add("busy");
+  const [t,m]=await Promise.all([load("today",force),load("tomorrow",force)]);
+  $("tab-tomorrow").disabled=!(m&&m.available);
+  render();
+  $("updated").textContent=
+    "Actualisé à "+new Date().toLocaleTimeString("fr-CH",{hour:"2-digit",minute:"2-digit"})+
+    ((cache[day]&&cache[day].seed)?" · données figées 22.06 (proxy injoignable)":
+     (cache[day]&&cache[day].publication?" · publié "+new Date(cache[day].publication).toLocaleString("fr-CH",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):""));
+  $("refresh").classList.remove("busy");state.busy=false;
+}
+
+function setDay(d){day=d;$("tab-today").classList.toggle("act",d==="today");
+  $("tab-tomorrow").classList.toggle("act",d==="tomorrow");render();refreshUpdatedLine();}
+function refreshUpdatedLine(){const c=cache[day];
+  if(c&&c.publication)$("updated").textContent="Publié "+new Date(c.publication).toLocaleString("fr-CH",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});}
+
+function render(){
+  const c=cache[day];const now=$("now");const content=$("content");
+  if(!c||!c.available||!c.values){now.innerHTML="";
+    content.innerHTML='<div class="empty">'+(day==="tomorrow"
+      ?"Prix de demain pas encore publiés (sortent à 18h la veille)."
+      :"Données indisponibles. Vérifiez le proxy /api/tarifs.")+'</div>';return;}
+  const v=c.values;const sorted=[...v].sort((a,b)=>a-b);
+  const min=sorted[0],max=sorted[sorted.length-1],avg=v.reduce((a,b)=>a+b,0)/v.length;
+  const p33=q(sorted,.33),p66=q(sorted,.66);
+  const minI=v.indexOf(min),maxI=v.indexOf(max);
+  const cheap=windowAvg(v,8,"min"),peak=windowAvg(v,8,"max");
+  const cls=x=>x<=p33?"go":x>=p66?"hi":"mid";
+
+  // Prix maintenant (uniquement aujourd'hui)
+  const d=new Date();const nowIdx=day==="today"?d.getHours()*4+Math.floor(d.getMinutes()/15):-1;
+  if(nowIdx>=0&&nowIdx<96){const np=v[nowIdx],nc=cls(np);
+    now.innerHTML=`<div class="nowcard ${nc}"><div><span class="nowLabel">Maintenant · ${slotLabel(nowIdx)}</span>
+      <span class="nowPrice">${ct(np)}<small> ct/kWh</small></span></div>
+      <span class="nowVerdict">${nc==="go"?"Bon marché":nc==="hi"?"Cher":"Moyen"}</span></div>`;
+  }else now.innerHTML="";
+
+  // Chart
+  const W=720,H=300,padL=44,padR=14,padT=16,padB=26;
+  const yMax=Math.ceil(max*100/5)*5/100;
+  const X=i=>padL+(i/95)*(W-padL-padR), Y=val=>padT+(1-val/yMax)*(H-padT-padB);
+  const bw=(W-padL-padR)/95;
+  let bands="",line="";
+  v.forEach((val,i)=>{const k=cls(val);if(k!=="mid")
+    bands+=`<rect class="band ${k}" x="${(X(i)-bw/2).toFixed(1)}" y="${padT}" width="${bw.toFixed(2)}" height="${H-padT-padB}"/>`;
+    line+=(i?"L":"M")+X(i).toFixed(1)+" "+Y(val).toFixed(1)+" ";});
+  let gridY="";[0,.25,.5,.75,1].forEach(f=>{const yv=yMax*f;
+    gridY+=`<line class="grid" x1="${padL}" y1="${Y(yv)}" x2="${W-padR}" y2="${Y(yv)}"/>
+      <text class="yl" x="${padL-6}" y="${Y(yv)+3}" text-anchor="end">${Math.round(yv*100)}</text>`;});
+  let xl="";[0,6,12,18,24].forEach(h=>{const i=Math.min(95,h*4);
+    xl+=`<text class="xl" x="${X(i)}" y="${H-8}" text-anchor="middle">${h}h</text>`;});
+  const nowLine=(nowIdx>=0&&nowIdx<96)?`<line class="nowline" x1="${X(nowIdx)}" y1="${padT}" x2="${X(nowIdx)}" y2="${H-padB}"/>`:"";
+
+  content.innerHTML=`
+   <div class="card">
+    <svg viewBox="0 0 ${W} ${H}" class="chart" preserveAspectRatio="none">
+      ${gridY}${bands}
+      <path class="area" d="M${X(0)} ${Y(0)} ${line} L${X(95)} ${Y(0)} Z"/>
+      <path class="line" d="${line}"/>
+      <circle class="dot go" cx="${X(minI)}" cy="${Y(min)}" r="5"/>
+      <circle class="dot hi" cx="${X(maxI)}" cy="${Y(max)}" r="5"/>
+      ${nowLine}${xl}
+    </svg>
+    <div class="axisNote">prix tout compris · ct/kWh</div>
+   </div>
+   <div class="grid3">
+    <div class="kpi"><span class="kl">Mini</span><span class="kv go">${ct(min)}</span><span class="ks">${slotLabel(minI)}</span></div>
+    <div class="kpi"><span class="kl">Moyenne</span><span class="kv">${ct(avg)}</span><span class="ks">ct/kWh</span></div>
+    <div class="kpi"><span class="kl">Maxi</span><span class="kv hi">${ct(max)}</span><span class="ks">${slotLabel(maxI)}</span></div>
+   </div>
+   <div class="slots">
+    <div class="slot go"><span class="sIco"></span><div class="col"><b>Meilleur créneau 2 h</b>
+      <span>${slotLabel(cheap.start)}–${slotLabel(cheap.start+8)} · ${ct(cheap.avg)} ct/kWh</span></div></div>
+    <div class="slot hi"><span class="sIco"></span><div class="col"><b>Pic à éviter</b>
+      <span>${slotLabel(peak.start)}–${slotLabel(peak.start+8)} · ${ct(peak.avg)} ct/kWh</span></div></div>
+   </div>`;
+}
+
+// Profil semaine (statique, structurel)
+(function(){let s="";for(let h=0;h<24;h++){let c="mid";
+  if(h>=11&&h<16)c="go";else if(h>=18&&h<23)c="hi";else if(h>=1&&h<5)c="go2";
+  s+=`<span class="cell ${c}"></span>`;}$("strip").innerHTML=s;})();
+
+document.getElementById("tgLink").href="https://t.me/"+BOT_USERNAME;
+$("tab-today").onclick=()=>setDay("today");
+$("tab-tomorrow").onclick=()=>{if(!$("tab-tomorrow").disabled)setDay("tomorrow")};
+$("refresh").onclick=()=>refresh(true);
+refresh(false);
+setInterval(()=>render(),60000); // déplace la ligne "maintenant"
+</script>
+</body>
+</html>
